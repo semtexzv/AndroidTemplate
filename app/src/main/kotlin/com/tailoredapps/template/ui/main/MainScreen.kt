@@ -17,6 +17,7 @@ package com.tailoredapps.template.ui.main
 import android.os.Bundle
 import com.tailoredapps.template.R
 import com.tailoredapps.template.databinding.ActivityMainBinding
+import com.tailoredapps.template.injection.components.ActivityComponent
 import com.tailoredapps.template.injection.scopes.PerActivity
 import com.tailoredapps.template.ui.base.BaseActivity
 import com.tailoredapps.template.ui.base.view.MvvmView
@@ -43,11 +44,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.ViewModel>(), Ma
         setSupportActionBar(binding.toolbar)
     }
 
+    override fun inject(component: ActivityComponent) {
+        component.inject(this)
+    }
 }
 
 
 @PerActivity
-class MainViewModel
-@Inject
-constructor() : BaseViewModel<MainMvvm.View>(), MainMvvm.ViewModel
+class MainViewModel @Inject constructor() : BaseViewModel<MainMvvm.View>(), MainMvvm.ViewModel
 

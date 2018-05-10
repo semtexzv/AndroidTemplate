@@ -42,12 +42,10 @@ abstract class BaseFragmentViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
                 .build()
     }
 
+    abstract fun inject(viewHolderComponent: FragmentViewHolderComponent)
+
     protected fun bindContentView(view: View) {
-        try {
-            FragmentViewHolderComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(viewHolderComponent, this)
-        } catch(e: NoSuchMethodException) {
-            throw RtfmException("You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in FragmentViewHolderComponent")
-        }
+        inject(viewHolderComponent)
 
         binding = DataBindingUtil.bind(view)!!
         binding.setVariable(BR.vm, viewModel)

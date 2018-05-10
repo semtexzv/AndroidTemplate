@@ -76,16 +76,14 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
         viewModel.saveInstanceState(outState)
     }
 
+    abstract fun inject(fragmentComponent: FragmentComponent)
+
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        try {
-            FragmentComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(fragmentComponent, this)
-        } catch(e: NoSuchMethodException) {
-            throw RtfmException("You forgot to add \"fun inject(fragment: ${this::class.java.simpleName})\" in FragmentComponent")
-        }
+        inject(fragmentComponent)
     }
+
 
     @CallSuper
     override fun onDestroyView() {

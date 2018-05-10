@@ -34,9 +34,9 @@ import io.reactivex.disposables.CompositeDisposable
 @PerActivity
 @Component(dependencies = [(AppComponent::class)], modules = [(ActivityModule::class), (ViewModelModule::class)])
 interface ActivityComponent : ActivityComponentProvides {
+    fun inject(mainActivity: MainActivity)
     // create inject methods for your Activities here
 
-    fun inject(activity: MainActivity)
 
 }
 

@@ -54,7 +54,8 @@ import javax.inject.Inject
 abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCompatActivity(), MvvmView {
 
     protected lateinit var binding: B
-    @Inject protected lateinit var viewModel: VM
+    @Inject
+    protected lateinit var viewModel: VM
 
     @Inject
     protected lateinit var refWatcher: RefWatcher
@@ -69,6 +70,8 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
                 .build()
     }
 
+    abstract fun inject(component: ActivityComponent)
+
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -78,12 +81,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        try {
-            ActivityComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(activityComponent, this)
-        } catch(e: NoSuchMethodException) {
-            throw RtfmException("You forgot to add \"fun inject(activity: ${this::class.java.simpleName})\" in ActivityComponent")
-        }
+        inject(activityComponent)
     }
 
     @CallSuper
